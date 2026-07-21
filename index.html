@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizzapp — dough scheduler</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main>
+      <h1>🍕 Pizzapp</h1>
+      <p class="tagline">Tell it when you want to bake — it works out when to start.</p>
+
+      <form id="scheduler-form">
+        <label class="field">
+          <span>Start baking at</span>
+          <input type="datetime-local" id="bake-start" name="bakeStart" required />
+        </label>
+
+        <fieldset class="field">
+          <legend>Fermentation</legend>
+          <label class="radio">
+            <input type="radio" name="fermentation" value="36h" checked />
+            <span>36-hour</span>
+          </label>
+          <label class="radio">
+            <input type="radio" name="fermentation" value="48h" />
+            <span>48-hour</span>
+          </label>
+        </fieldset>
+
+        <label class="checkbox">
+          <input type="checkbox" name="poolish" />
+          <span>Use poolish (pre-ferment)</span>
+        </label>
+      </form>
+
+      <p id="error" class="error" role="alert"></p>
+
+      <h2>Your schedule</h2>
+      <ol id="schedule" class="schedule"></ol>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

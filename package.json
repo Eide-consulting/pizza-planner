@@ -1,0 +1,11 @@
+{
+  "name": "pizzapp",
+  "version": "1.0.0",
+  "description": "Backwards-scheduling tool for pizza dough (36h / 48h, with optional poolish).",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "serve": "python3 -m http.server 8000"
+  }
+}
