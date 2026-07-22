@@ -7,8 +7,10 @@ the clock time for each preparation step working backwards from the bake.
 ## Language
 
 **Fermentation**:
-The base dough procedure, chosen by total length — **36h** or **48h** — defining the
-ordered sequence of main-dough steps. Selectable independently of Poolish.
+The base dough procedure, chosen either as a preset by total length — **24h**, **36h**,
+**48h**, or **72h** — or as **Custom**, where the user supplies a total room-temperature
+budget and a total cold budget. Either way it defines the ordered sequence of main-dough
+steps. Selectable independently of Poolish.
 _Avoid_: Recipe, method (Pizzapp schedules time, it does not manage ingredients)
 
 **Step**:

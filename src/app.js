@@ -6,6 +6,7 @@ const form = document.getElementById('scheduler-form');
 const bakeInput = document.getElementById('bake-start');
 const output = document.getElementById('schedule');
 const errorBox = document.getElementById('error');
+const customTimes = document.querySelector('.custom-times');
 
 const dateFmt = new Intl.DateTimeFormat(undefined, {
   weekday: 'short',
@@ -68,11 +69,16 @@ function update() {
     const fermentationId = form.elements.fermentation.value;
     const withPoolish = form.elements.poolish.checked;
     const bakeStart = new Date(bakeInput.value);
+    const custom = {
+      rtHours: Number(form.elements.rtHours.value),
+      ctHours: Number(form.elements.ctHours.value),
+    };
+    customTimes.hidden = fermentationId !== 'custom';
     if (Number.isNaN(bakeStart.getTime())) {
       output.replaceChildren();
       return;
     }
-    render(buildSchedule({ fermentationId, withPoolish, bakeStart }));
+    render(buildSchedule({ fermentationId, custom, withPoolish, bakeStart }));
   } catch (err) {
     output.replaceChildren();
     errorBox.textContent = err instanceof Error ? err.message : String(err);

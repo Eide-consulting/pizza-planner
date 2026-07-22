@@ -78,3 +78,51 @@ test('formatDuration renders compactly', () => {
   assert.equal(formatDuration(30), '30m');
   assert.equal(formatDuration(0), '');
 });
+
+test('custom method sends all cold time to the fridge bulk', () => {
+  const entries = buildSchedule({
+    fermentationId: 'custom',
+    custom: { rtHours: 12, ctHours: 30 },
+    withPoolish: false,
+    bakeStart: BAKE,
+  });
+  const cold = entryFor(entries, 'Bulk rise in the fridge');
+  assert.equal(cold.durationMin, 30 * 60);
+});
+
+test('custom method puts all room-temperature time beyond 4h into the ball rise', () => {
+  const entries = buildSchedule({
+    fermentationId: 'custom',
+    custom: { rtHours: 14, ctHours: 58 },
+    withPoolish: false,
+    bakeStart: BAKE,
+  });
+  const ball = entryFor(entries, 'Ball & final rise at room temperature');
+  const bulkRt = entryFor(entries, 'Bulk rise at room temperature');
+  const temper = entryFor(entries, 'Temper (bring to room temperature)');
+  assert.equal(bulkRt.durationMin, 2 * 60);
+  assert.equal(temper.durationMin, 2 * 60);
+  assert.equal(ball.durationMin, (14 - 4) * 60); // matches the 72h preset's 10h ball
+});
+
+test('custom method rejects room-temperature time of 4h or less', () => {
+  assert.throws(() =>
+    buildSchedule({
+      fermentationId: 'custom',
+      custom: { rtHours: 4, ctHours: 24 },
+      withPoolish: false,
+      bakeStart: BAKE,
+    }),
+  );
+});
+
+test('custom method rejects negative cold time', () => {
+  assert.throws(() =>
+    buildSchedule({
+      fermentationId: 'custom',
+      custom: { rtHours: 12, ctHours: -1 },
+      withPoolish: false,
+      bakeStart: BAKE,
+    }),
+  );
+});

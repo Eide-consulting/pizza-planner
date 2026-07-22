@@ -144,3 +144,14 @@ h2 {
 .step--bake .step__duration {
   display: none;
 }
+
+.credit {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.credit a {
+  color: var(--accent);
+}

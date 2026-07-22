@@ -1,7 +1,7 @@
 // Pure backwards-scheduling logic. No DOM, no I/O — import this in the browser and in
 // node:test alike. See docs/adr/0001-data-driven-step-schedule.md for the model.
 
-import { FERMENTATIONS, POOLISH_STEPS } from './methods.js';
+import { FERMENTATIONS, POOLISH_STEPS, buildCustomFermentation } from './methods.js';
 
 /**
  * @typedef {Object} ScheduleEntry
@@ -44,13 +44,15 @@ function scheduleBackwards(steps, anchorEnd, kind) {
  * Build the full chronological schedule for a dough.
  *
  * @param {Object} options
- * @param {string}  options.fermentationId  '36h' or '48h'.
+ * @param {string}  options.fermentationId  '24h', '36h', '48h', '72h', or 'custom'.
+ * @param {{rtHours: number, ctHours: number}} [options.custom]  Used when fermentationId is 'custom'.
  * @param {boolean} options.withPoolish
  * @param {Date}    options.bakeStart        When you want to start baking.
  * @returns {ScheduleEntry[]}  Sorted earliest → latest, ending with the bake.
  */
-export function buildSchedule({ fermentationId, withPoolish, bakeStart }) {
-  const fermentation = FERMENTATIONS[fermentationId];
+export function buildSchedule({ fermentationId, custom, withPoolish, bakeStart }) {
+  const fermentation =
+    fermentationId === 'custom' ? buildCustomFermentation(custom ?? {}) : FERMENTATIONS[fermentationId];
   if (!fermentation) {
     throw new Error(`Unknown fermentation: ${fermentationId}`);
   }

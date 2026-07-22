@@ -9,7 +9,10 @@ Based on the 36-hour and 48-hour doughs (and the poolish pre-ferment) from the
 
 ## What it does
 
-- Pick a **fermentation**: **36-hour** or **48-hour**.
+- Pick a **fermentation**: **24-hour**, **36-hour**, **48-hour**, **72-hour**, or **Custom**.
+- With **Custom**, enter a total room-temperature budget and a total cold/fridge budget;
+  the short initial bulk (2h) and temper (2h) stay fixed, all remaining room-temperature
+  time goes to the balls' final rise, and all cold time goes to the fridge bulk.
 - Optionally add a **poolish** pre-ferment (20h ferment + 1h chill), prepended to either.
 - Enter your **bake start** (date + time).
 - Get a single chronological checklist, earliest action first, each with weekday, date,
