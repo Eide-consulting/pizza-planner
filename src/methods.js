@@ -19,6 +19,18 @@ const H = 60;
 
 /** @type {Record<string, Fermentation>} */
 export const FERMENTATIONS = {
+  '24h': {
+    id: '24h',
+    label: '24-hour',
+    steps: [
+      { id: 'mix', label: 'Mix dough', durationMin: 30 },
+      { id: 'rest', label: 'Rest dough', durationMin: 30 },
+      { id: 'bulk-rt', label: 'Bulk rise at room temperature', durationMin: 2 * H },
+      { id: 'bulk-cold', label: 'Bulk rise in the fridge', durationMin: 12 * H },
+      { id: 'temper', label: 'Temper (bring to room temperature)', durationMin: 2 * H },
+      { id: 'ball', label: 'Ball & final rise at room temperature', durationMin: 8 * H },
+    ],
+  },
   '36h': {
     id: '36h',
     label: '36-hour',
@@ -41,6 +53,18 @@ export const FERMENTATIONS = {
       { id: 'bulk-cold', label: 'Bulk rise in the fridge', durationMin: 36 * H },
       { id: 'temper', label: 'Temper (bring to room temperature)', durationMin: 2 * H },
       { id: 'ball', label: 'Ball & final rise at room temperature', durationMin: 8 * H },
+    ],
+  },
+  '72h': {
+    id: '72h',
+    label: '72-hour',
+    steps: [
+      { id: 'mix', label: 'Mix dough', durationMin: 30 },
+      { id: 'rest', label: 'Rest dough', durationMin: 30 },
+      { id: 'bulk-rt', label: 'Bulk rise at room temperature', durationMin: 2 * H },
+      { id: 'bulk-cold', label: 'Bulk rise in the fridge', durationMin: 58 * H },
+      { id: 'temper', label: 'Temper (bring to room temperature)', durationMin: 2 * H },
+      { id: 'ball', label: 'Ball & final rise at room temperature', durationMin: 10 * H },
     ],
   },
 };
