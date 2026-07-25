@@ -14,6 +14,10 @@ Based on the 36-hour and 48-hour doughs (and the poolish pre-ferment) from the
   the short initial bulk (2h) and temper (2h) stay fixed, all remaining room-temperature
   time goes to the balls' final rise, and all cold time goes to the fridge bulk.
 - Optionally add a **poolish** pre-ferment (20h ferment + 1h chill), prepended to either.
+- Optionally set a **quiet window** (e.g. 22:00–08:00): if balling would start during it,
+  Pizzapp moves room-temperature time out of the final rise and into the pre-fridge bulk
+  so balling starts at the end of the window instead — the bake time and the total
+  room-temperature and cold budgets stay the same.
 - Enter your **bake start** (date + time).
 - Get a single chronological checklist, earliest action first, each with weekday, date,
   time and how long it lasts.

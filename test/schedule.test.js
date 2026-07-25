@@ -126,3 +126,83 @@ test('custom method rejects negative cold time', () => {
     }),
   );
 });
+
+// Quiet window: 22:00–08:00 expressed as minutes since midnight.
+const QUIET = { startMin: 22 * 60, endMin: 8 * 60 };
+const NIGHT_BAKE = new Date('2026-07-23T12:00:00'); // 36h ball → balling at 04:00
+
+test('quiet window shifts RT from the ball rise into the pre-fridge bulk', () => {
+  const entries = buildSchedule({
+    fermentationId: '36h',
+    withPoolish: false,
+    bakeStart: NIGHT_BAKE,
+    quietWindow: QUIET,
+  });
+  const ball = entryFor(entries, 'Ball & final rise at room temperature');
+  const bulkRt = entryFor(entries, 'Bulk rise at room temperature');
+  // Balling would start at 04:00 (inside 22:00–08:00); it is pushed to 08:00, so 4h of
+  // final rise moves into the pre-fridge bulk (2h → 6h, 8h → 4h).
+  assert.equal(ball.durationMin, 4 * 60);
+  assert.equal(bulkRt.durationMin, 6 * 60);
+  assert.equal(ball.time.getTime(), NIGHT_BAKE.getTime() - 4 * 60 * MS_PER_MIN); // 08:00
+  assert.equal(ball.time.getHours(), 8);
+});
+
+test('quiet window keeps the total lead time (mix and bake are unmoved)', () => {
+  const plain = buildSchedule({ fermentationId: '36h', withPoolish: false, bakeStart: NIGHT_BAKE });
+  const quiet = buildSchedule({
+    fermentationId: '36h',
+    withPoolish: false,
+    bakeStart: NIGHT_BAKE,
+    quietWindow: QUIET,
+  });
+  assert.equal(
+    entryFor(quiet, 'Mix dough').time.getTime(),
+    entryFor(plain, 'Mix dough').time.getTime(),
+  );
+  assert.equal(quiet[quiet.length - 1].time.getTime(), NIGHT_BAKE.getTime());
+});
+
+test('quiet window leaves a daytime balling start untouched', () => {
+  // BAKE is 16:00; the 36h ball rise of 8h puts balling at 08:00, at the window edge.
+  const plain = buildSchedule({ fermentationId: '36h', withPoolish: false, bakeStart: BAKE });
+  const quiet = buildSchedule({
+    fermentationId: '36h',
+    withPoolish: false,
+    bakeStart: BAKE,
+    quietWindow: QUIET,
+  });
+  assert.equal(
+    entryFor(quiet, 'Ball & final rise at room temperature').durationMin,
+    entryFor(plain, 'Ball & final rise at room temperature').durationMin,
+  );
+});
+
+test('quiet window never shortens the final rise below 2h (best effort)', () => {
+  // Bake at 09:00 → balling at 01:00; clearing to 08:00 needs 7h but only 6h is available
+  // (8h ball down to the 2h floor), so it shifts 6h and stops.
+  const earlyBake = new Date('2026-07-23T09:00:00');
+  const entries = buildSchedule({
+    fermentationId: '36h',
+    withPoolish: false,
+    bakeStart: earlyBake,
+    quietWindow: QUIET,
+  });
+  const ball = entryFor(entries, 'Ball & final rise at room temperature');
+  const bulkRt = entryFor(entries, 'Bulk rise at room temperature');
+  assert.equal(ball.durationMin, 2 * 60);
+  assert.equal(bulkRt.durationMin, 8 * 60);
+});
+
+test('quiet window does not mutate the shared fermentation presets', () => {
+  buildSchedule({
+    fermentationId: '36h',
+    withPoolish: false,
+    bakeStart: NIGHT_BAKE,
+    quietWindow: QUIET,
+  });
+  const ball = FERMENTATIONS['36h'].steps.find((s) => s.id === 'ball');
+  const bulkRt = FERMENTATIONS['36h'].steps.find((s) => s.id === 'bulk-rt');
+  assert.equal(ball.durationMin, 8 * 60);
+  assert.equal(bulkRt.durationMin, 2 * 60);
+});

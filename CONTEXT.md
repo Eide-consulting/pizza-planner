@@ -48,6 +48,14 @@ _Avoid_: Portion, split (Norwegian: _balling_)
 Letting Cold dough return to Room Temperature after the fridge, before balling.
 _Avoid_: Warm up, rest (Norwegian: _romtemperering_)
 
+**Quiet window**:
+An optional span of the day (e.g. 22:00–08:00) during which the user does not want the
+Ball step to start. When the default balling start falls inside it, Pizzapp moves Room-
+Temperature time out of the final rise and into the pre-fridge Bulk, keeping the total
+Room-Temperature and Cold budgets and the Bake Start fixed while pushing balling to the
+end of the window.
+_Avoid_: Sleep window, do-not-disturb (Norwegian: _stilletid_)
+
 **Poolish**:
 An optional pre-ferment (make → ferment 20h → chill 1h) that can be added on top of
 either Fermentation. When enabled, its timeline is anchored so the poolish is ready

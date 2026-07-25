@@ -7,6 +7,7 @@ const bakeInput = document.getElementById('bake-start');
 const output = document.getElementById('schedule');
 const errorBox = document.getElementById('error');
 const customTimes = document.querySelector('.custom-times');
+const quietTimes = document.querySelector('.quiet-times');
 
 const dateFmt = new Intl.DateTimeFormat(undefined, {
   weekday: 'short',
@@ -63,6 +64,13 @@ function render(entries) {
   }
 }
 
+// Parse an <input type="time"> "HH:mm" value into minutes since midnight.
+function parseTimeToMin(value) {
+  const m = /^(\d{2}):(\d{2})$/.exec(value ?? '');
+  if (!m) return null;
+  return Number(m[1]) * 60 + Number(m[2]);
+}
+
 function update() {
   errorBox.textContent = '';
   try {
@@ -73,12 +81,20 @@ function update() {
       rtHours: Number(form.elements.rtHours.value),
       ctHours: Number(form.elements.ctHours.value),
     };
+    const quietOn = form.elements.quiet.checked;
+    const quietWindow = quietOn
+      ? {
+          startMin: parseTimeToMin(form.elements.quietStart.value),
+          endMin: parseTimeToMin(form.elements.quietEnd.value),
+        }
+      : null;
     customTimes.hidden = fermentationId !== 'custom';
+    quietTimes.hidden = !quietOn;
     if (Number.isNaN(bakeStart.getTime())) {
       output.replaceChildren();
       return;
     }
-    render(buildSchedule({ fermentationId, custom, withPoolish, bakeStart }));
+    render(buildSchedule({ fermentationId, custom, withPoolish, bakeStart, quietWindow }));
   } catch (err) {
     output.replaceChildren();
     errorBox.textContent = err instanceof Error ? err.message : String(err);

@@ -60,13 +60,24 @@ legend {
   padding: 0;
 }
 
-input[type="datetime-local"] {
+input[type="datetime-local"],
+input[type="time"] {
   font: inherit;
   padding: 0.6rem;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
   color: inherit;
+}
+
+.quiet-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.quiet-times[hidden] {
+  display: none;
 }
 
 .radio,

@@ -56,6 +56,24 @@
           <input type="checkbox" name="poolish" />
           <span>Use poolish (pre-ferment)</span>
         </label>
+
+        <fieldset class="field">
+          <legend>Avoid balling overnight</legend>
+          <label class="checkbox">
+            <input type="checkbox" name="quiet" checked />
+            <span>Don't start balling during quiet hours</span>
+          </label>
+          <div class="quiet-times">
+            <label class="field">
+              <span>Quiet from</span>
+              <input type="time" id="quiet-start" name="quietStart" value="22:00" />
+            </label>
+            <label class="field">
+              <span>until</span>
+              <input type="time" id="quiet-end" name="quietEnd" value="08:00" />
+            </label>
+          </div>
+        </fieldset>
       </form>
 
       <p id="error" class="error" role="alert"></p>
